@@ -3,18 +3,26 @@ html {
   font-family: 'Roboto', sans-serif;
 }
 
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   box-sizing: inherit;
 }
 
-section, article, nav, aside, header, footer, main {
+section,
+article,
+nav,
+aside,
+header,
+footer,
+main {
   display: block;
 }
 
 body {
   margin: 0;
   background-color: rgb(22, 22, 22);
-} 
+}
 
 .container {
   border: 1px solid rgb(138, 138, 138);
