@@ -1,26 +1,26 @@
 'use scrict'
 
-let computerResult;
+let computerChoice;
 
 // Begin with a function called getComputerChoice that will randomly return either ‘Rock’, ‘Paper’ or ‘Scissors’:
 
 function getComputerChoice() {
-  computerResult = Math.floor(Math.random() * 3); // returns random number between 0 and 2;
+  computerChoice = Math.floor(Math.random() * 3); // returns random number between 0 and 2;
 
-  switch(computerResult) {
+  switch(computerChoice) {
     case 0:
-      computerResult = 'Rock';
+      computerChoice = 'Rock';
       break;
     case 1:
-      computerResult = 'Paper';
+      computerChoice = 'Paper';
       break;
     case 2:
-      computerResult = 'Scissors';
+      computerChoice = 'Scissors';
       break;
   }
 
-  return computerResult;
+  return computerChoice;
 }
 
 getComputerChoice();
-console.log(computerResult);
+console.log(computerChoice);
