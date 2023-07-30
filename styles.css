@@ -24,7 +24,8 @@ body {
   margin: 24px auto;
   padding: 12px;
   text-align: center;
-  color: rgb(53, 61, 66);
+  color: rgb(85, 98, 105);
+  font-weight: bold;
 }
 
 .container h1 {
