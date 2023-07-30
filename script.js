@@ -1,6 +1,6 @@
 'use scrict'
 
-// Begin with a function called getcomputerSelection that will randomly return either ‘Rock’, ‘Paper’ or ‘Scissors’:
+// Begin with a function called getComputerSelection that will randomly return either ‘Rock’, ‘Paper’ or ‘Scissors’:
 
 let computerSelection;
 
