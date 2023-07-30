@@ -48,25 +48,14 @@ function getPlayerSelection() {
 
   playerSelection = prompt('Enter your choice: ', 'Rock, Paper or Scissors');
 
-  if (playerSelection === null || playerSelection === '') {
-    alert('Goodbye!');
-    return;
-  } else {
-      const stringLowerCase = playerSelection.toLowerCase(); // rock
-      const stringFirstChar = stringLowerCase.charAt(0); // r
-      const stringFirstCharUpperCase = stringFirstChar.toUpperCase(); // R
-      const stringSliceOf = stringLowerCase.slice(1); // ock
-      const newString = stringFirstCharUpperCase + stringSliceOf; // R + ock
+  const stringLowerCase = playerSelection.toLowerCase(); // rock
+  const stringFirstChar = stringLowerCase.charAt(0); // r
+  const stringFirstCharUpperCase = stringFirstChar.toUpperCase(); // R
+  const stringSliceOf = stringLowerCase.slice(1); // ock
+  const newString = stringFirstCharUpperCase + stringSliceOf; // R + ock
 
-      playerSelection = newString;
+  return playerSelection = newString;
 
-      if (playerSelection == 'Rock' || playerSelection == 'Paper' || playerSelection == 'Scissors') {
-        return playerSelection;
-      } else {
-        alert('Wrong Choice!');
-        return;
-      }
-  }
 }
 
 let playerWinCounter = 0;
@@ -89,9 +78,17 @@ function game() {
 
   for ( let i = 0; i <= 2; i++) {
 
-    if (getPlayerSelection()){
+    getPlayerSelection();
+
+    if (playerSelection === null) {
+      alert('Goodbye!');
+      return;
+    } else if (playerSelection == 'Rock' || playerSelection == 'Paper' || playerSelection == 'Scissors') {
       console.log(`You chose the ${playerSelection}!`);
-    } else return;
+    } else {
+      alert('Wrong Choice!');
+      return
+    }
 
     getComputerSelection();
     console.log(`Computer chose the ${computerSelection}!`);
