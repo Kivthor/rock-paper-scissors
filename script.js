@@ -96,7 +96,7 @@ function roundResultCount() { // функция для подсчета побе
 let numberOfRounds;
 
 function getNumberOfRounds() { // функция для ввода количства желаемых игроком раундов
-  numberOfRounds = +prompt('How many rounds in a game you want to play?', 1);
+  numberOfRounds = +prompt('How many rounds you want to play?', 1);
   return numberOfRounds;
 }
 
@@ -143,5 +143,5 @@ function game() { // функция для основной игры
 }
 
 if (game()) {
-  alert(`${gameResult}\n \nYour score is (${playerWinCounter})\nComputer score is (${computerWinCounter})`);
+  alert(`${gameResult}\n \nYour score is --- (${playerWinCounter})\nComputer score is --- (${computerWinCounter})`);
 }
