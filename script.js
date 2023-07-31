@@ -16,6 +16,7 @@ function game() {
       let playerSelection = getPlayerSelection();
 
       if (playerSelection) {
+        console.log(`------- ROUND ${i} -------`)
         console.log(`You chose ${playerSelection}`);
         alert(`You chose ${playerSelection}`);
       } else {
@@ -31,25 +32,31 @@ function game() {
       alert(roundResult);
 
       roundResultCount(roundResult, playerSelection, computerSelection);
-      console.log(`Your current score is ${playerWinCounter}`);
-      console.log(`Computer current score is ${computerWinCounter}`);
+      console.log(`((( Your score is ${playerWinCounter} )))\n \n((( Computer score is ${computerWinCounter} )))`);
     }
 
     let gameResult = getGameResult(playerWinCounter, computerWinCounter);
     return gameResult;
 
   } else {
+    console.log("Goodbye!\n \nGame is Over!");
     alert("Goodbye!\n \nGame is Over!");
     return;
   }
 }
 
 if (game()) {
+  console.log(
+    `${getGameResult(
+      playerWinCounter,
+      computerWinCounter
+    )}\n \n~~~~~   Your FINAL score is   ${playerWinCounter}   ~~~~~\n~~~~~ Computer FINAL score is   ${computerWinCounter}   ~~~~~`
+  );
   alert(
     `${getGameResult(
       playerWinCounter,
       computerWinCounter
-    )}\n \nYour score is --- (${playerWinCounter})\nComputer score is --- (${computerWinCounter})`
+    )}\n \n~~~~~   Your FINAL score is   ${playerWinCounter}   ~~~~~\n~~~~~ Computer FINAL score is   ${computerWinCounter}   ~~~~~`
   );
 }
 
@@ -93,6 +100,7 @@ function getPlayerSelection() {
 
   if (!playerSelection) {
     // проверка если игрок нажмет отмена или отправит пустое поле
+    console.log("Goodbye!\n \nGame is Over!");
     alert("Goodbye!\n \nGame is Over!");
     return;
   } else {
@@ -106,6 +114,7 @@ function getPlayerSelection() {
       // проверка что вводятся именно нужные значения
       return playerSelection;
     } else {
+      console.log("Wrong Choice!\n \nGame is Over!");
       alert("Wrong Choice!\n \nGame is Over!");
       return;
     }
