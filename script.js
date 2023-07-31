@@ -9,22 +9,30 @@ function game() {
   const numberOfRounds = getNumberOfRounds();
 
   if (numberOfRounds) {
+    console.log(`${numberOfRounds} Round(s) are chosen!`);
+
     for (let i = 1; i <= numberOfRounds; i++) {
 
       let playerSelection = getPlayerSelection();
+
       if (playerSelection) {
+        console.log(`You chose ${playerSelection}`);
         alert(`You chose ${playerSelection}`);
       } else {
         return;
       }
 
       let computerSelection = getComputerSelection();
+      console.log(`Computer chose ${computerSelection}`);
       alert(`Computer chose ${computerSelection}`);
 
       let roundResult = getRoundResult(playerSelection, computerSelection);
+      console.log(roundResult);
       alert(roundResult);
 
       roundResultCount(roundResult, playerSelection, computerSelection);
+      console.log(`Your current score is ${playerWinCounter}`);
+      console.log(`Computer current score is ${computerWinCounter}`);
     }
 
     let gameResult = getGameResult(playerWinCounter, computerWinCounter);
