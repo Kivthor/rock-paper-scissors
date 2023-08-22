@@ -29,8 +29,12 @@ function game() {
 
       // получаем победителя раунда (или ничью) и счет
       let roundResult = getRoundResult(playerSelection, computerSelection);
-      console.log(`${roundResult}\n \nSCORE IS ${playerWinCounter} : ${computerWinCounter}`);
-      alert(`${roundResult}\n \nSCORE IS ${playerWinCounter} : ${computerWinCounter}`);
+      console.log(
+        `${roundResult}\n \nSCORE IS ${playerWinCounter} : ${computerWinCounter}`
+      );
+      alert(
+        `${roundResult}\n \nSCORE IS ${playerWinCounter} : ${computerWinCounter}`
+      );
     }
     // получаем результат игры
     let gameResult = getGameResult();
@@ -91,22 +95,17 @@ function getPlayerSelection() {
     console.log("Goodbye!\n \nGame is Over!");
     alert("Goodbye!\n \nGame is Over!");
     return;
+  } else if (
+    playerSelection.toLowerCase() === "rock" ||
+    playerSelection.toLowerCase() === "paper" ||
+    playerSelection.toLowerCase() === "scissors"
+  ) {
+    return (playerSelection =
+      firstCharOfStringInUpperCaseAndRestOfStringInLower(playerSelection));
   } else {
-    // переводим ввод пользователя в нужный формат вида "Abcdef"
-    playerSelection =
-      firstCharOfStringInUpperCaseAndRestOfStringInLower(playerSelection);
-    // проверка ввода
-    if (
-      playerSelection == "Rock" ||
-      playerSelection == "Paper" ||
-      playerSelection == "Scissors"
-    ) {
-      return playerSelection;
-    } else {
-      console.log("Wrong Choice!\n \nGame is Over!");
-      alert("Wrong Choice!\n \nGame is Over!");
-      return;
-    }
+    console.log("Wrong Choice!\n \nGame is Over!");
+    alert("Wrong Choice!\n \nGame is Over!");
+    return;
   }
 }
 
