@@ -16,6 +16,7 @@ function game() {
     for (let i = 1; i <= numberOfRounds; i++) {
       // получаем выбор игрока
       let playerSelection = getPlayerSelection();
+      console.log(`Player Input After Calculation = ${playerSelection}`);
       // проверка что игрок сделал правильный выбор
       if (playerSelection) {
         console.log(`------- ROUND ${i} -------`);
@@ -75,13 +76,11 @@ function getComputerSelection() {
 }
 
 // функция берет строку и делает первую букву заглавной а остальные строчные
-function firstCharOfStringInUpperCaseAndRestOfStringInLower(playerSelection) {
-  const stringLowerCase = playerSelection.toLowerCase(); // rock
-  const stringFirstChar = stringLowerCase.charAt(0); // r
-  const stringFirstCharUpperCase = stringFirstChar.toUpperCase(); // R
-  const stringSliceOf = stringLowerCase.slice(1); // ock
-  const newString = stringFirstCharUpperCase.concat(stringSliceOf); // R + ock
-  return (playerSelection = newString); // ROCK => Rock или sciSSORs => Scissors
+function playerSelectionNormalize(playerSelection) {
+  const inputStringFirstCharUpCase = playerSelection.charAt(0).toUpperCase();
+  const restOfStringInLowCase = playerSelection.slice(1).toLowerCase();
+  const newString = inputStringFirstCharUpCase.concat(restOfStringInLowCase);
+  return newString; // ROCK => Rock или sciSSORs => Scissors
 }
 
 // функция для выбора значений которые вводит игрок
@@ -100,8 +99,7 @@ function getPlayerSelection() {
     playerSelection.toLowerCase() === "paper" ||
     playerSelection.toLowerCase() === "scissors"
   ) {
-    return (playerSelection =
-      firstCharOfStringInUpperCaseAndRestOfStringInLower(playerSelection));
+    return playerSelectionNormalize(playerSelection);
   } else {
     console.log("Wrong Choice!\n \nGame is Over!");
     alert("Wrong Choice!\n \nGame is Over!");
