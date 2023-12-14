@@ -1,143 +1,117 @@
 "use scrict";
 
-let playerWinCounter = 0;
-let computerWinCounter = 0;
-
 game();
 
 // основная функция
 function game() {
-  // получаем количество раундов игры
+  let playerScore = 0;
+  let computerScore = 0;
+  // вызываем функцию для выбора счета для победы
   const numberOfRounds = getNumberOfRounds();
-
-  if (numberOfRounds) {
-    console.log(`${numberOfRounds} Round(s) are chosen!`);
-
-    for (let i = 1; i <= numberOfRounds; i++) {
-      // получаем выбор игрока
-      let playerSelection = getPlayerSelection();
-      console.log(`Player Input After Calculation = ${playerSelection}`);
-      // проверка что игрок сделал правильный выбор
-      if (playerSelection) {
-        console.log(`------- ROUND ${i} -------`);
-        console.log(`You chose ${playerSelection}`);
-      } else {
-        return;
-      }
-      // получаем выбор компьютера
-      let computerSelection = getComputerSelection();
-      console.log(`Computer chose ${computerSelection}`);
-
-      // получаем победителя раунда (или ничью) и счет
-      let roundResult = getRoundResult(playerSelection, computerSelection);
-      console.log(
-        `${roundResult}\n \nSCORE IS ${playerWinCounter} : ${computerWinCounter}`
-      );
-      alert(
-        `${roundResult}\n \nSCORE IS ${playerWinCounter} : ${computerWinCounter}`
-      );
-    }
-    // получаем результат игры
-    let gameResult = getGameResult();
-    console.log(gameResult);
-    alert(gameResult);
-    return gameResult;
-  } else {
-    console.log("Goodbye!\n \nGame is Over!");
-    alert("Goodbye!\n \nGame is Over!");
+  // проверка если игрок закрыл окно ввода или ввел неверное значение
+  if (!numberOfRounds) {
+    console.log("wrong input, game is over");
     return;
+  } else console.log(`WINNER SCORE MUST BE EQUAL TO ${numberOfRounds}`);
+  // цикл для повторения раундов игры пока счет игрока или компьютера не станет равным выбранному ранее счету для победы
+  while (playerScore < numberOfRounds && computerScore < numberOfRounds) {
+    console.log('<NEW ROUND>');
+    // вызываем функцию выбора игрока
+    const playerSelection = getPlayerSelection();
+    // проверка если игрок закрыл окно ввода или ввел неверное значение
+    if (!playerSelection) {
+      console.log("wrong input, game is over");
+      return;
+    }
+    console.log(`your choice is --- ${playerSelection} ---`);
+    // вызываем функцию выборы компьютера
+    const computerSelection = getComputerSelection();
+    console.log(`computer choice is --- ${computerSelection} ---`);
+    // вызываем функцию для определения победителя одного раунда
+    const roundResult = getRoundResult(playerSelection, computerSelection);
+    console.log(`IT'S A ${roundResult}!`);
+    // увеличиваем счет игрока или компьютера в зависимости от результата раунда
+    switch (roundResult) {
+      case "VICTORY":
+        playerScore++;
+        break;
+      case "DEFEAT":
+        computerScore++;
+        break;
+      case "DRAW":
+        break;
+    }
+    console.log(`Round score is ${playerScore} : ${computerScore}`);
   }
+  // вызываем функцию для определения победителя всей игры
+  const gameResult = getGameResult(playerScore, computerScore);
+  console.log(
+    `GAME IS FINISHED!\nSCORE IS ${playerScore} : ${computerScore}!\nYOU ${gameResult}!`
+  );
+  return gameResult;
 }
 
 // вспомогательные функции
 
-// функция для ввода количества желаемых игроком раундов
+// функция для определения сколько игрок или компьютер должны набрать очков для победы
 function getNumberOfRounds() {
-  let numberOfRounds = +prompt("How many rounds you want to play?", 1);
+  const numberOfRounds = +prompt("Score to win?", 3);
   return numberOfRounds;
-}
-
-// возвращает случайное число от 0 до 2
-function getRandomNumber0_2() {
-  let randomNumber = Math.floor(Math.random() * 3);
-  return randomNumber;
 }
 
 // функция для вывода компьтером нужных значений случайным образом
 function getComputerSelection() {
-  switch (getRandomNumber0_2()) {
+  const randomNumberOf3 = Math.floor(Math.random() * 3);
+  switch (randomNumberOf3) {
     case 0:
-      return "Rock";
+      return "rock";
     case 1:
-      return "Paper";
+      return "paper";
     case 2:
-      return "Scissors";
+      return "scissors";
   }
-}
-
-// функция берет строку и делает первую букву заглавной а остальные строчные
-function playerSelectionNormalize(playerSelection) {
-  const inputStringFirstCharUpCase = playerSelection.charAt(0).toUpperCase();
-  const restOfStringInLowCase = playerSelection.slice(1).toLowerCase();
-  const newString = inputStringFirstCharUpCase.concat(restOfStringInLowCase);
-  return newString; // ROCK => Rock или sciSSORs => Scissors
 }
 
 // функция для выбора значений которые вводит игрок
 function getPlayerSelection() {
-  let playerSelection = prompt(
+  const playerSelection = prompt(
     "Enter your choice: ",
     "Rock, Paper or Scissors"
   );
   // проверка если игрок нажмет отмена или отправит пустую строку
   if (!playerSelection) {
-    console.log("Goodbye!\n \nGame is Over!");
-    alert("Goodbye!\n \nGame is Over!");
     return;
   } else if (
     playerSelection.toLowerCase() === "rock" ||
     playerSelection.toLowerCase() === "paper" ||
     playerSelection.toLowerCase() === "scissors"
   ) {
-    return playerSelectionNormalize(playerSelection);
-  } else {
-    console.log("Wrong Choice!\n \nGame is Over!");
-    alert("Wrong Choice!\n \nGame is Over!");
-    return;
+    return playerSelection.toLowerCase();
   }
+  return;
 }
 
 // функция которая определяет победителя одного раунда игры (или ничью)
 function getRoundResult(playerSelection, computerSelection) {
   // проверка на ничью
-  if (
-    (playerSelection === "Rock" && computerSelection === "Rock") ||
-    (playerSelection === "Paper" && computerSelection === "Paper") ||
-    (playerSelection === "Scissors" && computerSelection === "Scissors")
-  ) {
-    return `DRAW!\n \n${playerSelection} equals ${computerSelection}!`;
+  if (playerSelection === computerSelection) {
+    return "DRAW";
     // проверка на проигрыш
   } else if (
-    (playerSelection === "Rock" && computerSelection === "Paper") ||
-    (playerSelection === "Paper" && computerSelection === "Scissors") ||
-    (playerSelection === "Scissors" && computerSelection === "Rock")
+    (playerSelection === "rock" && computerSelection === "paper") ||
+    (playerSelection === "paper" && computerSelection === "scissors") ||
+    (playerSelection === "scissors" && computerSelection === "rock")
   ) {
-    computerWinCounter++;
-    return `YOU LOSE!\n \n${computerSelection} beats ${playerSelection}!`;
+    return "DEFEAT";
     // проверка на выигрыш
   } else {
-    playerWinCounter++;
-    return `YOU WIN!\n \n${playerSelection} beats ${computerSelection}!`;
+    return "VICTORY";
   }
 }
 
-// функция для подсчета количества очков в конце игры и выявление победителя игры
-function getGameResult() {
-  if (playerWinCounter === computerWinCounter) {
-    return `Game is finished!\n \nIT IS DRAW!\n \nFinal score is ${playerWinCounter} : ${computerWinCounter}`;
-  } else if (playerWinCounter > computerWinCounter) {
-    return `Game is finished!\n \nYOU WON!\n \nFinal score is ${playerWinCounter} : ${computerWinCounter}`;
-  } else {
-    return `Game is finished!\n \nYOU LOST!\n \nFinal score is ${playerWinCounter} : ${computerWinCounter}`;
-  }
+//функция для установления победителя игры
+function getGameResult(playerScore, computerScore) {
+  if (playerScore > computerScore) {
+    return "WIN";
+  } else return "LOOSE";
 }
