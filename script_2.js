@@ -94,11 +94,7 @@ function getPlayerSelection() {
 // функция которая определяет победителя одного раунда игры (или ничью)
 function getRoundResult(playerSelection, computerSelection) {
   // проверка на ничью
-  if (
-    (playerSelection === "rock" && computerSelection === "rock") ||
-    (playerSelection === "paper" && computerSelection === "paper") ||
-    (playerSelection === "scissors" && computerSelection === "scissors")
-  ) {
+  if (playerSelection === computerSelection) {
     return "DRAW";
     // проверка на проигрыш
   } else if (
