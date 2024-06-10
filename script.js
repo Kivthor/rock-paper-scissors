@@ -115,3 +115,5 @@ function getGameResult(playerScore, computerScore) {
     return "WIN";
   } else return "LOOSE";
 }
+
+//git test
