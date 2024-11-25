@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Game</title>
+    <style>
+      html {
+        box-sizing: border-box;
+        font-family: "Roboto", sans-serif;
+      }
+
+      *,
+      *:before,
+      *:after {
+        box-sizing: inherit;
+      }
+
+      body {
+        padding: 0;
+        margin: 0;
+      }
+
+      img {
+        display: block;
+        width: 100%;
+        height: auto;
+        /* outline: 1px solid black; */
+      }
+
+      main {
+        min-width: 320px;
+        min-height: 300px;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: stretch;
+        gap: 6px;
+      }
+
+      .mainContainer {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        gap: 16px;
+        flex-wrap: wrap;
+        outline: 2px solid rgb(78, 78, 212);
+      }
+
+      .subContainer {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 16px;
+        outline: 2px solid rgb(53, 224, 53);
+      }
+
+      .gameStatus,
+      .gameOptions {
+        justify-content: center;
+      }
+
+      .playerBlock {
+        flex-direction: column-reverse;
+      }
+
+      .computerBlock {
+        flex-direction: column-reverse;
+      }
+
+      @media screen and (max-width: 878px) {
+        main {
+          min-height: 660px;
+        }
+        .gameBlock {
+          flex-basis: 100%;
+          justify-content: center;
+        }
+        .computerBlock {
+          flex-direction: column;
+        }
+      }
+
+      .gameBlock > button {
+        border: none;
+        border-radius: 36px;
+        background-color: #fff;
+      }
+
+      .gameBlock > button:hover {
+        cursor: pointer;
+      }
+
+      .gameBlock > button:active {
+        background-color: #efefef;
+      }
+
+      #computer-choice,
+      #player-choice,
+      #score,
+      #game-result {
+        border-radius: 6px;
+        background-color: rgb(231, 80, 80);
+        text-transform: uppercase;
+        color: white;
+        padding: 2px;
+      }
+
+      #player-choice {
+        background-color: rgb(61, 141, 231);
+      }
+
+      #score,
+      #game-result {
+        background-color: #43be86;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="mainContainer gameOptions">
+        <div class="subContainer optionsBlock">
+          <div class="rounds">До скольки побед играть?</div>
+          <select name="roundsOfTheGame" id="rounds" autocomplete="off">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </div>
+        <div class="subContainer optionsBlock">
+          <input type="button" value="Начать игру" class="startEndGame" />
+        </div>
+      </div>
+      <div class="mainContainer gameBase">
+        <div class="subContainer playerBlock">
+          <div>Игрок выбрал <span id="player-choice">камень</span></div>
+          <div class="avatarBlock playerAvatar">
+            <img
+              src="rock-paper-scissors/img/wojak-150width.png"
+              alt="аватар игрока"
+            />
+          </div>
+        </div>
+        <div class="subContainer gameBlock">
+          <button type="button" id="rock">
+            <img src="rock-paper-scissors/img/rock-width120.png" alt="rock" />
+          </button>
+          <button type="button" id="scissors">
+            <img
+              src="rock-paper-scissors/img/scissors-120width.png"
+              alt="scissors"
+            />
+          </button>
+          <button type="button" id="paper">
+            <img src="rock-paper-scissors/img/paper-width120.png" alt="paper" />
+          </button>
+        </div>
+        <div class="subContainer computerBlock">
+          <div>Компьютер выбрал <span id="computer-choice">ножницы</span></div>
+          <div class="avatarBlock computerAvatar">
+            <img
+              src="rock-paper-scissors/img/npc-150width.png"
+              alt="аватар компьютера"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="mainContainer gameStatus">
+        <div class="subContainer gameStatusItems">
+          <div>Счет: <span id="score">0:0</span></div>
+        </div>
+        <div class="subContainer gameStatusItems">
+          <div>Результат Игры: <span id="game-result">Ничья</span></div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
