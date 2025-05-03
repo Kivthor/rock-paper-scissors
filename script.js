@@ -1,4 +1,4 @@
-"use scrict";
+"use strict";
 
 game();
 
@@ -55,11 +55,10 @@ function game() {
 
 // функция для определения сколько игрок или компьютер должны набрать очков для победы
 function getNumberOfRounds() {
-  const numberOfRounds = +prompt("Score to win?", 3);
-  return numberOfRounds;
+  return +prompt("Score to win?", "3");
 }
 
-// функция для вывода компьтером нужных значений случайным образом
+// функция для вывода компьютером нужных значений случайным образом
 function getComputerSelection() {
   const randomNumberOf3 = Math.floor(Math.random() * 3);
   switch (randomNumberOf3) {
@@ -91,7 +90,7 @@ function getPlayerSelection() {
   return;
 }
 
-// функция которая определяет победителя одного раунда игры (или ничью)
+// функция, которая определяет победителя одного раунда игры (или ничью)
 function getRoundResult(playerSelection, computerSelection) {
   // проверка на ничью
   if (playerSelection === computerSelection) {
