@@ -14,12 +14,13 @@
       *:before,
       *:after {
         box-sizing: inherit;
+        /* font-size: 1.1rem;  */
       }
 
       body {
         padding: 0;
         margin: 0;
-        background-color: rgb(204, 204, 204);
+        background-color: rgb(255, 255, 255);
       }
 
       img {
@@ -44,17 +45,17 @@
         display: flex;
         flex-direction: row;
         justify-content: space-around;
-        gap: 16px;
+        gap: 20px;
         flex-wrap: wrap;
-        outline: 2px solid rgb(78, 78, 212);
+        /* outline: 2px solid rgb(78, 78, 212); */
       }
 
       .subContainer {
         display: flex;
         flex-direction: row;
         align-items: center;
-        gap: 16px;
-        outline: 2px solid rgb(53, 224, 53);
+        gap: 6px;
+        /* outline: 2px solid rgb(53, 224, 53); */
       }
 
       .gameStatus,
@@ -62,12 +63,21 @@
         justify-content: center;
       }
 
+      #rounds-text,
+      #end-button,
+      .gameBase,
+      .gameStatus,
+      .showChoice,
+      .gameResultBlock {
+        display: none;
+      }
+
       .playerBlock {
-        flex-direction: column-reverse;
+        flex-direction: column;
       }
 
       .computerBlock {
-        flex-direction: column-reverse;
+        flex-direction: column;
       }
 
       @media screen and (max-width: 878px) {
@@ -77,9 +87,6 @@
         .gameBlock {
           flex-basis: 100%;
           justify-content: center;
-        }
-        .computerBlock {
-          flex-direction: column;
         }
       }
 
@@ -97,22 +104,28 @@
         background-color: #efefef;
       }
 
-      #computer-choice,
+      .boldText {
+        font-weight: bold;
+        color: #43be86;
+      }
+
       #player-choice,
-      #score,
+      #computer-choice,
+      #player-score,
+      #computer-score,
       #game-result {
-        border-radius: 6px;
+        border-radius: 4px;
         background-color: rgb(231, 80, 80);
         text-transform: uppercase;
         color: white;
-        padding: 2px;
+        padding: 2px 6px;
       }
 
+      #player-score,
       #player-choice {
         background-color: rgb(61, 141, 231);
       }
 
-      #score,
       #game-result {
         background-color: #43be86;
       }
@@ -121,9 +134,13 @@
   <body>
     <main>
       <div class="mainContainer gameOptions">
-        <div class="subContainer optionsBlock">
-          <div class="rounds">До скольки побед играть?</div>
-          <select name="roundsOfTheGame" id="rounds" autocomplete="off">
+        <div class="subContainer optionsBlock roundsBlock">
+          <div>До скольки побед играть?</div>
+          <select
+            name="roundsOfTheGame"
+            id="number-of-rounds"
+            autocomplete="off"
+          >
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -132,42 +149,216 @@
           </select>
         </div>
         <div class="subContainer optionsBlock">
-          <input type="button" value="Начать игру" class="startEndGame" />
+          <div id="rounds-text">
+            Играйте до <span class="boldText" id="rounds">1</span> побед!
+          </div>
+          <input type="button" value="Начать игру" id="start-button" />
+          <input type="button" value="Закончить игру" id="end-button" />
         </div>
       </div>
       <div class="mainContainer gameBase">
         <div class="subContainer playerBlock">
-          <div>Игрок выбрал <span id="player-choice">камень</span></div>
           <div class="avatarBlock playerAvatar">
             <img src="img/wojak-150width.png" alt="аватар игрока" />
           </div>
+          <span class="boldText">Игрок</span>
+          <span class="showChoice">выбрал</span>
+          <span class="showChoice" id="player-choice">камень</span>
         </div>
         <div class="subContainer gameBlock">
-          <button type="button" id="rock">
+          <button type="button" id="rock-button">
             <img src="img/rock-width120.png" alt="rock" />
           </button>
-          <button type="button" id="scissors">
+          <button type="button" id="scissors-button">
             <img src="img/scissors-120width.png" alt="scissors" />
           </button>
-          <button type="button" id="paper">
+          <button type="button" id="paper-button">
             <img src="img/paper-width120.png" alt="paper" />
           </button>
         </div>
         <div class="subContainer computerBlock">
-          <div>Компьютер выбрал <span id="computer-choice">ножницы</span></div>
           <div class="avatarBlock computerAvatar">
             <img src="img/npc-150width.png" alt="аватар компьютера" />
           </div>
+          <span class="boldText">Компьютер</span>
+          <span class="showChoice">выбрал</span>
+          <span class="showChoice" id="computer-choice">ножницы</span>
         </div>
       </div>
       <div class="mainContainer gameStatus">
         <div class="subContainer gameStatusItems">
-          <div>Счет: <span id="score">0:0</span></div>
+          <div>
+            Счет: <span id="player-score">0</span>:<span id="computer-score"
+              >0</span
+            >
+          </div>
         </div>
-        <div class="subContainer gameStatusItems">
-          <div>Результат Игры: <span id="game-result">Ничья</span></div>
+        <div class="subContainer gameStatusItems gameResultBlock">
+          <div>Результат Игры: <span id="game-result"></span></div>
         </div>
       </div>
     </main>
+    <script>
+      "use strict";
+
+      let playerScoreValue = 0;
+      let computerScoreValue = 0;
+
+      const ROCK = "КАМЕНЬ";
+      const PAPER = "БУМАГУ";
+      const SCISSORS = "НОЖНИЦЫ";
+      const DRAW = "НИЧЬЯ";
+      const VICTORY = "ПОБЕДА";
+      const DEFEAT = "ПОРАЖЕНИЕ";
+
+      const roundsBlock = document.querySelector(".roundsBlock");
+      const numberOfRounds = document.getElementById("number-of-rounds");
+      const roundsText = document.getElementById("rounds-text");
+      const rounds = document.getElementById("rounds");
+
+      const startButton = document.getElementById("start-button");
+      const endButton = document.getElementById("end-button");
+      const showChoice = document.querySelectorAll(".showChoice");
+      const gameBase = document.querySelector(".gameBase");
+      const gameBlock = document.querySelector(".gameBlock");
+      const gameStatus = document.querySelector(".gameStatus");
+      const gameResultBlock = document.querySelector(".gameResultBlock");
+      const gameResult = document.getElementById("game-result");
+
+      const playerChoice = document.getElementById("player-choice");
+      const playerScore = document.getElementById("player-score");
+      const computerChoice = document.getElementById("computer-choice");
+      const computerScore = document.getElementById("computer-score");
+
+      const rockButton = document.getElementById("rock-button");
+      const paperButton = document.getElementById("paper-button");
+      const scissorsButton = document.getElementById("scissors-button");
+
+      const showGameElements = () => {
+        roundsBlock.style.display = "none";
+        startButton.style.display = "none";
+        roundsText.style.display = "block";
+        endButton.style.display = "block";
+        gameBase.style.display = "flex";
+        gameStatus.style.display = "flex";
+      };
+
+      const hideGameElements = () => {
+        roundsBlock.style.removeProperty("display");
+        roundsText.style.removeProperty("display");
+        startButton.style.removeProperty("display");
+        endButton.style.removeProperty("display");
+        gameBase.style.removeProperty("display");
+        gameBlock.style.removeProperty("display");
+        gameStatus.style.removeProperty("display");
+        gameResultBlock.style.removeProperty("display");
+
+        showChoice.forEach((element) => {
+          element.style.removeProperty("display");
+          console.log("kek");
+        });
+      };
+
+      const showChoiceToggle = () => {
+        if (document.querySelector(".showChoice").style.display === "") {
+          showChoice.forEach((element) => {
+            element.style.display = "inline";
+          });
+        } else return;
+      };
+
+      const getComputerChoice = () => {
+        const randomNumberOf3 = Math.floor(Math.random() * 3);
+        switch (randomNumberOf3) {
+          case 0:
+            return ROCK;
+          case 1:
+            return PAPER;
+          case 2:
+            return SCISSORS;
+        }
+      };
+
+      const getRoundResult = () => {
+        if (playerChoice.innerText === computerChoice.innerText) {
+          return;
+        } else if (
+          (playerChoice.innerText === ROCK &&
+            computerChoice.innerText === PAPER) ||
+          (playerChoice.innerText === PAPER &&
+            computerChoice.innerText === SCISSORS) ||
+          (playerChoice.innerText === SCISSORS &&
+            computerChoice.innerText === ROCK)
+        ) {
+          computerScoreValue++;
+        } else {
+          playerScoreValue++;
+        }
+      };
+
+      const nulifyScore = () => {
+        playerScoreValue = 0;
+        computerScoreValue = 0;
+        playerScore.innerText = playerScoreValue;
+        computerScore.innerText = computerScoreValue;
+      };
+
+      const game = () => {
+        if (
+          playerScoreValue == numberOfRounds.value ||
+          computerScoreValue == numberOfRounds.value
+        ) {
+          gameResult.innerText =
+            playerScoreValue === computerScoreValue
+              ? DRAW
+              : playerScoreValue > computerScoreValue
+              ? VICTORY
+              : DEFEAT;
+          gameResultBlock.style.display = "block";
+          gameBlock.style.display = "none";
+          roundsText.style.display = "none";
+        } else return;
+      };
+
+      startButton.addEventListener("click", (event) => {
+        showGameElements();
+        rounds.innerText = numberOfRounds.value;
+      });
+
+      endButton.addEventListener("click", (event) => {
+        hideGameElements();
+        nulifyScore();
+      });
+
+      rockButton.addEventListener("click", (event) => {
+        showChoiceToggle();
+        playerChoice.innerText = ROCK;
+        computerChoice.innerText = getComputerChoice();
+        getRoundResult();
+        playerScore.innerText = playerScoreValue;
+        computerScore.innerText = computerScoreValue;
+        game();
+      });
+
+      paperButton.addEventListener("click", (event) => {
+        showChoiceToggle();
+        playerChoice.innerText = PAPER;
+        computerChoice.innerText = getComputerChoice();
+        getRoundResult();
+        playerScore.innerText = playerScoreValue;
+        computerScore.innerText = computerScoreValue;
+        game();
+      });
+
+      scissorsButton.addEventListener("click", (event) => {
+        showChoiceToggle();
+        playerChoice.innerText = SCISSORS;
+        computerChoice.innerText = getComputerChoice();
+        getRoundResult();
+        playerScore.innerText = playerScoreValue;
+        computerScore.innerText = computerScoreValue;
+        game();
+      });
+    </script>
   </body>
 </html>
