@@ -216,20 +216,20 @@
       const roundsText = document.getElementById("rounds-text");
       const rounds = document.getElementById("rounds");
 
-      const startButton = document.getElementById("start-button");
-      const endButton = document.getElementById("end-button");
       const showChoice = document.querySelectorAll(".showChoice");
       const gameBase = document.querySelector(".gameBase");
       const gameBlock = document.querySelector(".gameBlock");
       const gameStatus = document.querySelector(".gameStatus");
       const gameResultBlock = document.querySelector(".gameResultBlock");
-      const gameResult = document.getElementById("game-result");
+      const gameResultValue = document.getElementById("game-result");
 
       const playerChoice = document.getElementById("player-choice");
       const playerScore = document.getElementById("player-score");
       const computerChoice = document.getElementById("computer-choice");
       const computerScore = document.getElementById("computer-score");
 
+      const startButton = document.getElementById("start-button");
+      const endButton = document.getElementById("end-button");
       const rockButton = document.getElementById("rock-button");
       const paperButton = document.getElementById("paper-button");
       const scissorsButton = document.getElementById("scissors-button");
@@ -255,8 +255,14 @@
 
         showChoice.forEach((element) => {
           element.style.removeProperty("display");
-          console.log("kek");
         });
+      };
+
+      const resetScore = () => {
+        playerScoreValue = 0;
+        computerScoreValue = 0;
+        playerScore.innerText = playerScoreValue;
+        computerScore.innerText = computerScoreValue;
       };
 
       const showChoiceToggle = () => {
@@ -296,24 +302,29 @@
         }
       };
 
-      const nulifyScore = () => {
-        playerScoreValue = 0;
-        computerScoreValue = 0;
+      const game = (playerSelection) => {
+        showChoiceToggle();
+        playerChoice.innerText = playerSelection;
+        computerChoice.innerText = getComputerChoice();
+        console.log(playerSelection);
+        console.log("------------------");
+        console.log(getComputerChoice());
+        console.log(computerChoice.innerText);
+        getRoundResult();
         playerScore.innerText = playerScoreValue;
         computerScore.innerText = computerScoreValue;
-      };
 
-      const game = () => {
         if (
           playerScoreValue == numberOfRounds.value ||
           computerScoreValue == numberOfRounds.value
         ) {
-          gameResult.innerText =
+          gameResultValue.innerText =
             playerScoreValue === computerScoreValue
               ? DRAW
               : playerScoreValue > computerScoreValue
               ? VICTORY
               : DEFEAT;
+
           gameResultBlock.style.display = "block";
           gameBlock.style.display = "none";
           roundsText.style.display = "none";
@@ -327,38 +338,14 @@
 
       endButton.addEventListener("click", (event) => {
         hideGameElements();
-        nulifyScore();
+        resetScore();
       });
 
-      rockButton.addEventListener("click", (event) => {
-        showChoiceToggle();
-        playerChoice.innerText = ROCK;
-        computerChoice.innerText = getComputerChoice();
-        getRoundResult();
-        playerScore.innerText = playerScoreValue;
-        computerScore.innerText = computerScoreValue;
-        game();
-      });
+      rockButton.addEventListener("click", (event) => game(ROCK));
 
-      paperButton.addEventListener("click", (event) => {
-        showChoiceToggle();
-        playerChoice.innerText = PAPER;
-        computerChoice.innerText = getComputerChoice();
-        getRoundResult();
-        playerScore.innerText = playerScoreValue;
-        computerScore.innerText = computerScoreValue;
-        game();
-      });
+      paperButton.addEventListener("click", (event) => game(PAPER));
 
-      scissorsButton.addEventListener("click", (event) => {
-        showChoiceToggle();
-        playerChoice.innerText = SCISSORS;
-        computerChoice.innerText = getComputerChoice();
-        getRoundResult();
-        playerScore.innerText = playerScoreValue;
-        computerScore.innerText = computerScoreValue;
-        game();
-      });
+      scissorsButton.addEventListener("click", (event) => game(SCISSORS));
     </script>
   </body>
 </html>
