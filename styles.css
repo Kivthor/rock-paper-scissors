@@ -1,6 +1,6 @@
 html {
   box-sizing: border-box;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 *,
@@ -9,35 +9,113 @@ html {
   box-sizing: inherit;
 }
 
-section,
-article,
-nav,
-aside,
-header,
-footer,
-main {
-  display: block;
-}
-
 body {
+  padding: 0;
   margin: 0;
-  background-color: rgb(22, 22, 22);
+  background-color: rgb(255, 255, 255);
 }
 
-.container {
-  border: 1px solid rgb(138, 138, 138);
-  border-radius: 12px;
-  box-shadow: 0px 0px 24px rgb(209, 209, 209);
+img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+main {
+  min-width: 320px;
   max-width: 900px;
-  min-width: 300px;
-  margin: 24px auto;
-  padding: 12px;
-  text-align: center;
-  color: rgb(113, 178, 212);
-  font-weight: bold;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: stretch;
+  gap: 6px;
+  margin: 0 auto;
 }
 
-.container h1 {
+.mainContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.subContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+}
+
+.gameStatus,
+.gameOptions {
+  justify-content: center;
+}
+
+#rounds-text,
+#end-button,
+.gameBase,
+.gameStatus,
+.showChoice,
+.gameResultBlock {
+  display: none;
+}
+
+.playerBlock {
+  flex-direction: column;
+}
+
+.computerBlock {
+  flex-direction: column;
+}
+
+@media screen and (max-width: 760px) {
+  main {
+    min-height: 660px;
+  }
+  .gameBlock {
+    flex-basis: 100%;
+    justify-content: center;
+  }
+}
+
+.gameBlock > button {
+  border: none;
+  border-radius: 36px;
+  background-color: #fff;
+}
+
+.gameBlock > button:hover {
+  cursor: pointer;
+}
+
+.gameBlock > button:active {
+  background-color: #efefef;
+}
+
+.boldText {
+  font-weight: bold;
+  color: #43be86;
+}
+
+#player-choice,
+#computer-choice,
+#player-score,
+#computer-score,
+#game-result {
+  border-radius: 4px;
+  background-color: rgb(231, 80, 80);
   text-transform: uppercase;
-  color: rgb(101, 155, 202);
+  color: white;
+  padding: 2px 6px;
+}
+
+#player-score,
+#player-choice {
+  background-color: rgb(61, 141, 231);
+}
+
+#game-result {
+  background-color: #43be86;
 }

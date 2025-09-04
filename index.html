@@ -1,20 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles.css" />
+    <title>Rock Paper Scissors</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./styles.css">
-  <title>Rock Paper Scissors</title>
-</head>
-
-<body>
-  <script src="./script.js"></script>
-  <div class="container">
-    <h1>My First JS game</h1>
-    <p>Press F5 to play the game</p>
-    <p>Press F12 and open console to show history of game</p>
-  </div>
-</body>
-
+  <body>
+    <main>
+      <div class="mainContainer gameOptions">
+        <div class="subContainer optionsBlock roundsBlock">
+          <div>До скольки побед играть?</div>
+          <select
+            name="roundsOfTheGame"
+            id="number-of-rounds"
+            autocomplete="off"
+          >
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </div>
+        <div class="subContainer optionsBlock">
+          <div id="rounds-text">
+            Играйте до <span class="boldText" id="rounds">1</span> побед!
+          </div>
+          <input type="button" value="Начать игру" id="start-button" />
+          <input type="button" value="Закончить игру" id="end-button" />
+        </div>
+      </div>
+      <div class="mainContainer gameBase">
+        <div class="subContainer playerBlock">
+          <img
+            class="playerAvatar"
+            src="img/wojak-150width.png"
+            alt="аватар игрока"
+          />
+          <span class="boldText">Игрок</span>
+          <span class="showChoice">выбрал</span>
+          <span class="showChoice" id="player-choice">камень</span>
+        </div>
+        <div class="subContainer gameBlock">
+          <button type="button" id="rock-button">
+            <img src="img/rock-width120.png" alt="rock" />
+          </button>
+          <button type="button" id="scissors-button">
+            <img src="img/scissors-120width.png" alt="scissors" />
+          </button>
+          <button type="button" id="paper-button">
+            <img src="img/paper-width120.png" alt="paper" />
+          </button>
+        </div>
+        <div class="subContainer computerBlock">
+          <img
+            class="computerAvatar"
+            src="img/npc-150width.png"
+            alt="аватар компьютера"
+          />
+          <span class="boldText">Компьютер</span>
+          <span class="showChoice">выбрал</span>
+          <span class="showChoice" id="computer-choice">ножницы</span>
+        </div>
+      </div>
+      <div class="mainContainer gameStatus">
+        <div class="subContainer gameStatusItems">
+          <div>
+            Счет: <span id="player-score">0</span>:<span id="computer-score"
+              >0</span
+            >
+          </div>
+        </div>
+        <div class="subContainer gameStatusItems gameResultBlock">
+          <div>Результат Игры: <span id="game-result"></span></div>
+        </div>
+      </div>
+    </main>
+    <script src="./script.js"></script>
+  </body>
 </html>

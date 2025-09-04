@@ -1,118 +1,158 @@
 "use strict";
 
-game();
+let playerScoreValue = 0;
+let computerScoreValue = 0;
 
-// основная функция
-function game() {
-  let playerScore = 0;
-  let computerScore = 0;
-  // вызываем функцию для выбора счета для победы
-  const numberOfRounds = getNumberOfRounds();
-  // проверка если игрок закрыл окно ввода или ввел неверное значение
-  if (!numberOfRounds) {
-    console.log("wrong input, game is over");
-    return;
-  } else console.log(`WINNER SCORE MUST BE EQUAL TO ${numberOfRounds}`);
-  // цикл для повторения раундов игры пока счет игрока или компьютера не станет равным выбранному ранее счету для победы
-  while (playerScore < numberOfRounds && computerScore < numberOfRounds) {
-    console.log('<NEW ROUND>');
-    // вызываем функцию выбора игрока
-    const playerSelection = getPlayerSelection();
-    // проверка если игрок закрыл окно ввода или ввел неверное значение
-    if (!playerSelection) {
-      console.log("wrong input, game is over");
-      return;
-    }
-    console.log(`your choice is --- ${playerSelection} ---`);
-    // вызываем функцию выборы компьютера
-    const computerSelection = getComputerSelection();
-    console.log(`computer choice is --- ${computerSelection} ---`);
-    // вызываем функцию для определения победителя одного раунда
-    const roundResult = getRoundResult(playerSelection, computerSelection);
-    console.log(`IT'S A ${roundResult}!`);
-    // увеличиваем счет игрока или компьютера в зависимости от результата раунда
-    switch (roundResult) {
-      case "VICTORY":
-        playerScore++;
-        break;
-      case "DEFEAT":
-        computerScore++;
-        break;
-      case "DRAW":
-        break;
-    }
-    console.log(`Round score is ${playerScore} : ${computerScore}`);
-  }
-  // вызываем функцию для определения победителя всей игры
-  const gameResult = getGameResult(playerScore, computerScore);
-  console.log(
-    `GAME IS FINISHED!\nSCORE IS ${playerScore} : ${computerScore}!\nYOU ${gameResult}!`
-  );
-  return gameResult;
-}
+const ROCK = "КАМЕНЬ";
+const PAPER = "БУМАГУ";
+const SCISSORS = "НОЖНИЦЫ";
+const DRAW = "НИЧЬЯ";
+const VICTORY = "ПОБЕДА";
+const DEFEAT = "ПОРАЖЕНИЕ";
 
-// вспомогательные функции
+const roundsBlock = document.querySelector(".roundsBlock");
+const numberOfRounds = document.getElementById("number-of-rounds");
+const roundsText = document.getElementById("rounds-text");
+const rounds = document.getElementById("rounds");
 
-// функция для определения сколько игрок или компьютер должны набрать очков для победы
-function getNumberOfRounds() {
-  return +prompt("Score to win?", "3");
-}
+const showChoice = document.querySelectorAll(".showChoice");
+const gameBase = document.querySelector(".gameBase");
+const gameBlock = document.querySelector(".gameBlock");
+const gameStatus = document.querySelector(".gameStatus");
+const gameResultBlock = document.querySelector(".gameResultBlock");
+const gameResultValue = document.getElementById("game-result");
 
-// функция для вывода компьютером нужных значений случайным образом
-function getComputerSelection() {
+const playerChoice = document.getElementById("player-choice");
+const playerScore = document.getElementById("player-score");
+const computerChoice = document.getElementById("computer-choice");
+const computerScore = document.getElementById("computer-score");
+
+const startButton = document.getElementById("start-button");
+const endButton = document.getElementById("end-button");
+const rockButton = document.getElementById("rock-button");
+const paperButton = document.getElementById("paper-button");
+const scissorsButton = document.getElementById("scissors-button");
+
+const showGameElements = () => {
+  roundsBlock.style.display = "none";
+  startButton.style.display = "none";
+  roundsText.style.display = "block";
+  endButton.style.display = "block";
+  gameBase.style.display = "flex";
+  gameStatus.style.display = "flex";
+  rockButton.disabled = false;
+  paperButton.disabled = false;
+  scissorsButton.disabled = false;
+};
+
+const hideGameElements = () => {
+  roundsBlock.style.removeProperty("display");
+  roundsText.style.removeProperty("display");
+  startButton.style.removeProperty("display");
+  endButton.style.removeProperty("display");
+  rockButton.style.removeProperty("cursor");
+  paperButton.style.removeProperty("cursor");
+  scissorsButton.style.removeProperty("cursor");
+  gameBase.style.removeProperty("display");
+  gameBlock.style.removeProperty("display");
+  gameBlock.style.removeProperty("opacity");
+  gameStatus.style.removeProperty("display");
+  gameResultBlock.style.removeProperty("display");
+
+  showChoice.forEach((element) => {
+    element.style.removeProperty("display");
+  });
+};
+
+const resetScore = () => {
+  playerScoreValue = 0;
+  computerScoreValue = 0;
+  playerScore.innerText = playerScoreValue;
+  computerScore.innerText = computerScoreValue;
+};
+
+const showChoiceToggle = () => {
+  if (document.querySelector(".showChoice").style.display === "") {
+    showChoice.forEach((element) => {
+      element.style.display = "inline";
+    });
+  } else return;
+};
+
+const getComputerChoice = () => {
   const randomNumberOf3 = Math.floor(Math.random() * 3);
   switch (randomNumberOf3) {
     case 0:
-      return "rock";
+      return ROCK;
     case 1:
-      return "paper";
+      return PAPER;
     case 2:
-      return "scissors";
+      return SCISSORS;
   }
-}
+};
 
-// функция для выбора значений которые вводит игрок
-function getPlayerSelection() {
-  const playerSelection = prompt(
-    "Enter your choice: ",
-    "Rock, Paper or Scissors"
-  );
-  // проверка если игрок нажмет отмена или отправит пустую строку
-  if (!playerSelection) {
+const getRoundResult = (playerChoiceValue, computerChoiceValue) => {
+  if (playerChoiceValue === computerChoiceValue) {
     return;
   } else if (
-    playerSelection.toLowerCase() === "rock" ||
-    playerSelection.toLowerCase() === "paper" ||
-    playerSelection.toLowerCase() === "scissors"
+    (playerChoiceValue === ROCK && computerChoiceValue === PAPER) ||
+    (playerChoiceValue === PAPER && computerChoiceValue === SCISSORS) ||
+    (playerChoiceValue === SCISSORS && computerChoiceValue === ROCK)
   ) {
-    return playerSelection.toLowerCase();
-  }
-  return;
-}
-
-// функция, которая определяет победителя одного раунда игры (или ничью)
-function getRoundResult(playerSelection, computerSelection) {
-  // проверка на ничью
-  if (playerSelection === computerSelection) {
-    return "DRAW";
-    // проверка на проигрыш
-  } else if (
-    (playerSelection === "rock" && computerSelection === "paper") ||
-    (playerSelection === "paper" && computerSelection === "scissors") ||
-    (playerSelection === "scissors" && computerSelection === "rock")
-  ) {
-    return "DEFEAT";
-    // проверка на выигрыш
+    computerScoreValue++;
   } else {
-    return "VICTORY";
+    playerScoreValue++;
   }
-}
+};
 
-//функция для установления победителя игры
-function getGameResult(playerScore, computerScore) {
-  if (playerScore > computerScore) {
-    return "WIN";
-  } else return "LOOSE";
-}
+const game = (playerSelection) => {
+  showChoiceToggle();
 
-//git test
+  const playerChoiceValue = playerSelection;
+  const computerChoiceValue = getComputerChoice();
+
+  getRoundResult(playerChoiceValue, computerChoiceValue);
+
+  playerChoice.innerText = playerChoiceValue;
+  computerChoice.innerText = computerChoiceValue;
+  playerScore.innerText = playerScoreValue;
+  computerScore.innerText = computerScoreValue;
+
+  if (
+    playerScoreValue == numberOfRounds.value ||
+    computerScoreValue == numberOfRounds.value
+  ) {
+    gameResultValue.innerText =
+      playerScoreValue === computerScoreValue
+        ? DRAW
+        : playerScoreValue > computerScoreValue
+        ? VICTORY
+        : DEFEAT;
+
+    gameResultBlock.style.display = "block";
+    roundsText.style.display = "none";
+    gameBlock.style.opacity = "30%";
+    rockButton.disabled = true;
+    paperButton.disabled = true;
+    scissorsButton.disabled = true;
+    rockButton.style.cursor = "not-allowed";
+    paperButton.style.cursor = "not-allowed";
+    scissorsButton.style.cursor = "not-allowed";
+  } else return;
+};
+
+startButton.addEventListener("click", (event) => {
+  showGameElements();
+  rounds.innerText = numberOfRounds.value;
+});
+
+endButton.addEventListener("click", (event) => {
+  hideGameElements();
+  resetScore();
+});
+
+rockButton.addEventListener("click", (event) => game(ROCK));
+
+paperButton.addEventListener("click", (event) => game(PAPER));
+
+scissorsButton.addEventListener("click", (event) => game(SCISSORS));
