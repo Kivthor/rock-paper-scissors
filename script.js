@@ -10,74 +10,83 @@ const DRAW = "НИЧЬЯ";
 const VICTORY = "ПОБЕДА";
 const DEFEAT = "ПОРАЖЕНИЕ";
 
-const roundsBlock = document.querySelector(".roundsBlock");
-const numberOfRounds = document.getElementById("number-of-rounds");
-const roundsText = document.getElementById("rounds-text");
-const rounds = document.getElementById("rounds");
+const gameRoundsSelectForm = document.querySelector(".select-form");
+const gameRoundsSelect = document.querySelector(".rounds-select");
+const gameInfo = document.querySelector(".game-info");
+const gameInfoMessage = document.querySelector(".game-info__message");
+const gameInfoSelectedRounds = document.querySelector(
+  ".game-info__selected-rounds"
+);
+const gameStartButton = document.querySelector(".start-button");
+const gameEndButton = document.querySelector(".end-button");
 
-const showChoice = document.querySelectorAll(".showChoice");
-const gameBase = document.querySelector(".gameBase");
-const gameBlock = document.querySelector(".gameBlock");
-const gameStatus = document.querySelector(".gameStatus");
-const gameResultBlock = document.querySelector(".gameResultBlock");
-const gameResultValue = document.getElementById("game-result");
+const gameStateContainer = document.querySelector(".game-state");
+const choiceWord = document.querySelectorAll(".choice-word");
+const playerChoice = document.querySelector(".player__choice");
+const computerChoice = document.querySelector(".computer__choice");
+const gameChoiceButtons = document.querySelectorAll(".game-choices__button");
+const rockButton = document.querySelector(".rock-button");
+const paperButton = document.querySelector(".paper-button");
+const scissorsButton = document.querySelector(".scissors-button");
 
-const playerChoice = document.getElementById("player-choice");
-const playerScore = document.getElementById("player-score");
-const computerChoice = document.getElementById("computer-choice");
-const computerScore = document.getElementById("computer-score");
-
-const startButton = document.getElementById("start-button");
-const endButton = document.getElementById("end-button");
-const rockButton = document.getElementById("rock-button");
-const paperButton = document.getElementById("paper-button");
-const scissorsButton = document.getElementById("scissors-button");
-
-const showGameElements = () => {
-  roundsBlock.style.display = "none";
-  startButton.style.display = "none";
-  roundsText.style.display = "block";
-  endButton.style.display = "block";
-  gameBase.style.display = "flex";
-  gameStatus.style.display = "flex";
-  rockButton.disabled = false;
-  paperButton.disabled = false;
-  scissorsButton.disabled = false;
-};
-
-const hideGameElements = () => {
-  roundsBlock.style.removeProperty("display");
-  roundsText.style.removeProperty("display");
-  startButton.style.removeProperty("display");
-  endButton.style.removeProperty("display");
-  rockButton.style.removeProperty("cursor");
-  paperButton.style.removeProperty("cursor");
-  scissorsButton.style.removeProperty("cursor");
-  gameBase.style.removeProperty("display");
-  gameBlock.style.removeProperty("display");
-  gameBlock.style.removeProperty("opacity");
-  gameStatus.style.removeProperty("display");
-  gameResultBlock.style.removeProperty("display");
-
-  showChoice.forEach((element) => {
-    element.style.removeProperty("display");
-  });
-};
+const gameResultContainer = document.querySelector(".game-result");
+const playerScore = document.querySelector(".game-result__score-player");
+const computerScore = document.querySelector(".game-result__score-computer");
+const gameResultFinalMessage = document.querySelector(
+  ".game-result__final-message"
+);
+const gameResultFinal = document.querySelector(".game-result__final");
 
 const resetScore = () => {
   playerScoreValue = 0;
   computerScoreValue = 0;
   playerScore.innerText = playerScoreValue;
   computerScore.innerText = computerScoreValue;
+  gameResultFinal.innerText = "";
 };
 
-const showChoiceToggle = () => {
-  if (document.querySelector(".showChoice").style.display === "") {
-    showChoice.forEach((element) => {
-      element.style.display = "inline";
-    });
-  } else return;
+const showPlayerAndComputerChoices = () => {
+  choiceWord.forEach((element) => {
+    element.classList.remove("is-hidden");
+  });
+  playerChoice.classList.remove("is-hidden");
+  computerChoice.classList.remove("is-hidden");
 };
+
+const disableGameElementsAndShowFinalResult = () => {
+  gameInfoMessage.classList.add("is-hidden");
+  gameResultFinalMessage.classList.remove("is-hidden");
+  gameChoiceButtons.forEach((element) => {
+    element.classList.add("is-disabled");
+  });
+};
+
+const toggleVisibillity = () => {
+  gameInfo.classList.toggle("is-hidden");
+  gameRoundsSelectForm.classList.toggle("is-hidden");
+  gameStateContainer.classList.toggle("is-hidden");
+  gameResultContainer.classList.toggle("is-hidden");
+  choiceWord.forEach((element) => {
+    element.classList.add("is-hidden");
+  });
+  playerChoice.classList.add("is-hidden");
+  computerChoice.classList.add("is-hidden");
+  gameInfoMessage.classList.remove("is-hidden");
+  gameResultFinalMessage.classList.add("is-hidden");
+  gameChoiceButtons.forEach((element) => {
+    element.classList.remove("is-disabled");
+  });
+};
+
+gameStartButton.addEventListener("click", (event) => {
+  toggleVisibillity();
+  gameInfoSelectedRounds.innerText = gameRoundsSelect.value;
+});
+
+gameEndButton.addEventListener("click", (event) => {
+  toggleVisibillity();
+  resetScore();
+});
 
 const getComputerChoice = () => {
   const randomNumberOf3 = Math.floor(Math.random() * 3);
@@ -106,7 +115,7 @@ const getRoundResult = (playerChoiceValue, computerChoiceValue) => {
 };
 
 const game = (playerSelection) => {
-  showChoiceToggle();
+  showPlayerAndComputerChoices();
 
   const playerChoiceValue = playerSelection;
   const computerChoiceValue = getComputerChoice();
@@ -119,37 +128,18 @@ const game = (playerSelection) => {
   computerScore.innerText = computerScoreValue;
 
   if (
-    playerScoreValue == numberOfRounds.value ||
-    computerScoreValue == numberOfRounds.value
+    playerScoreValue == gameRoundsSelect.value ||
+    computerScoreValue == gameRoundsSelect.value
   ) {
-    gameResultValue.innerText =
+    gameResultFinal.innerText =
       playerScoreValue === computerScoreValue
         ? DRAW
         : playerScoreValue > computerScoreValue
         ? VICTORY
         : DEFEAT;
-
-    gameResultBlock.style.display = "block";
-    roundsText.style.display = "none";
-    gameBlock.style.opacity = "30%";
-    rockButton.disabled = true;
-    paperButton.disabled = true;
-    scissorsButton.disabled = true;
-    rockButton.style.cursor = "not-allowed";
-    paperButton.style.cursor = "not-allowed";
-    scissorsButton.style.cursor = "not-allowed";
+    disableGameElementsAndShowFinalResult();
   } else return;
 };
-
-startButton.addEventListener("click", (event) => {
-  showGameElements();
-  rounds.innerText = numberOfRounds.value;
-});
-
-endButton.addEventListener("click", (event) => {
-  hideGameElements();
-  resetScore();
-});
 
 rockButton.addEventListener("click", (event) => game(ROCK));
 

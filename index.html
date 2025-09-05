@@ -8,73 +8,87 @@
   </head>
 
   <body>
-    <main>
-      <div class="mainContainer gameOptions">
-        <div class="subContainer optionsBlock roundsBlock">
-          <div>До скольки побед играть?</div>
-          <select
-            name="roundsOfTheGame"
-            id="number-of-rounds"
-            autocomplete="off"
-          >
+    <main class="game-container">
+      <div class="game-options game-block">
+        <form class="select-form game-sub-block">
+          <label for="rounds">До скольки побед играть?</label>
+          <select class="rounds-select" name="rounds" id="rounds" autocomplete="off">
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
             <option value="4">4</option>
             <option value="5">5</option>
           </select>
-        </div>
-        <div class="subContainer optionsBlock">
-          <div id="rounds-text">
-            Играйте до <span class="boldText" id="rounds">1</span> побед!
+          <button type="button" class="start-button">начать игру</button>
+        </form>
+        <div class="game-info game-sub-block is-hidden">
+          <div class="game-info__message">
+            Играйте до
+            <span class="game-info__selected-rounds">1</span> побед!
           </div>
-          <input type="button" value="Начать игру" id="start-button" />
-          <input type="button" value="Закончить игру" id="end-button" />
+          <button class="end-button">закончить игру</button>
         </div>
       </div>
-      <div class="mainContainer gameBase">
-        <div class="subContainer playerBlock">
+      <div class="game-state game-block is-hidden">
+        <div class="player game-sub-block">
           <img
-            class="playerAvatar"
+            class="player__avatar"
             src="img/wojak-150width.png"
             alt="аватар игрока"
+            width="150"
+            height="170"
           />
-          <span class="boldText">Игрок</span>
-          <span class="showChoice">выбрал</span>
-          <span class="showChoice" id="player-choice">камень</span>
+          <span class="player__name">Игрок</span>
+          <span class="choice-word is-hidden">выбрал</span>
+          <span class="player__choice is-hidden"></span>
         </div>
-        <div class="subContainer gameBlock">
-          <button type="button" id="rock-button">
-            <img src="img/rock-width120.png" alt="rock" />
+        <div class="game-choices game-sub-block">
+          <button class="rock-button game-choices__button">
+            <img
+              src="img/rock-width120.png"
+              alt="rock"
+              width="120"
+              height="120"
+            />
           </button>
-          <button type="button" id="scissors-button">
-            <img src="img/scissors-120width.png" alt="scissors" />
+          <button class="scissors-button game-choices__button">
+            <img
+              src="img/scissors-120width.png"
+              alt="scissors"
+              width="120"
+              height="120"
+            />
           </button>
-          <button type="button" id="paper-button">
-            <img src="img/paper-width120.png" alt="paper" />
+          <button class="paper-button game-choices__button">
+            <img
+              src="img/paper-width120.png"
+              alt="paper"
+              width="120"
+              height="120"
+            />
           </button>
         </div>
-        <div class="subContainer computerBlock">
+        <div class="computer game-sub-block">
           <img
-            class="computerAvatar"
+            class="computer__avatar"
             src="img/npc-150width.png"
             alt="аватар компьютера"
+            width="150"
+            height="170"
           />
-          <span class="boldText">Компьютер</span>
-          <span class="showChoice">выбрал</span>
-          <span class="showChoice" id="computer-choice">ножницы</span>
+          <span class="computer__name">Компьютер</span>
+          <span class="choice-word is-hidden">выбрал</span>
+          <span class="computer__choice is-hidden"></span>
         </div>
       </div>
-      <div class="mainContainer gameStatus">
-        <div class="subContainer gameStatusItems">
-          <div>
-            Счет: <span id="player-score">0</span>:<span id="computer-score"
-              >0</span
-            >
-          </div>
+      <div class="game-result game-block is-hidden">
+        <div class="game-result__message game-sub-block">
+          Счет: <span class="game-result__score-player">0</span>:<span class="game-result__score-computer"
+            >0</span
+          >
         </div>
-        <div class="subContainer gameStatusItems gameResultBlock">
-          <div>Результат Игры: <span id="game-result"></span></div>
+        <div class="game-result__final-message game-sub-block is-hidden">
+          Результат Игры: <span class="game-result__final"></span>
         </div>
       </div>
     </main>
