@@ -1,20 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles.css" />
+    <title>Rock Paper Scissors</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./styles.css">
-  <title>Rock Paper Scissors</title>
-</head>
-
-<body>
-  <script src="./script.js"></script>
-  <div class="container">
-    <h1>My First JS game</h1>
-    <p>Press F5 to play the game</p>
-    <p>Press F12 and open console to show history of game</p>
-  </div>
-</body>
-
+  <body>
+    <main class="game-container">
+      <div class="game-options game-block">
+        <form class="select-form game-sub-block">
+          <label for="rounds">До скольки побед играть?</label>
+          <select class="rounds-select" name="rounds" id="rounds" autocomplete="off">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+          <button type="button" class="start-button">начать игру</button>
+        </form>
+        <div class="game-info game-sub-block is-hidden">
+          <div class="game-info__message">
+            Играйте до
+            <span class="game-info__selected-rounds">1</span> побед!
+          </div>
+          <button class="end-button">закончить игру</button>
+        </div>
+      </div>
+      <div class="game-state game-block is-hidden">
+        <div class="player game-sub-block">
+          <img
+            class="player__avatar"
+            src="img/wojak-150width.png"
+            alt="аватар игрока"
+            width="150"
+            height="170"
+          />
+          <span class="player__name">Игрок</span>
+          <span class="choice-word is-hidden">выбрал</span>
+          <span class="player__choice is-hidden"></span>
+        </div>
+        <div class="game-choices game-sub-block">
+          <button class="rock-button game-choices__button">
+            <img
+              src="img/rock-width120.png"
+              alt="rock"
+              width="120"
+              height="120"
+            />
+          </button>
+          <button class="scissors-button game-choices__button">
+            <img
+              src="img/scissors-120width.png"
+              alt="scissors"
+              width="120"
+              height="120"
+            />
+          </button>
+          <button class="paper-button game-choices__button">
+            <img
+              src="img/paper-width120.png"
+              alt="paper"
+              width="120"
+              height="120"
+            />
+          </button>
+        </div>
+        <div class="computer game-sub-block">
+          <img
+            class="computer__avatar"
+            src="img/npc-150width.png"
+            alt="аватар компьютера"
+            width="150"
+            height="170"
+          />
+          <span class="computer__name">Компьютер</span>
+          <span class="choice-word is-hidden">выбрал</span>
+          <span class="computer__choice is-hidden"></span>
+        </div>
+      </div>
+      <div class="game-result game-block is-hidden">
+        <div class="game-result__message game-sub-block">
+          Счет: <span class="game-result__score-player">0</span>:<span class="game-result__score-computer"
+            >0</span
+          >
+        </div>
+        <div class="game-result__final-message game-sub-block is-hidden">
+          Результат Игры: <span class="game-result__final"></span>
+        </div>
+      </div>
+    </main>
+    <script src="./script.js"></script>
+  </body>
 </html>

@@ -1,118 +1,148 @@
 "use strict";
 
-game();
+let playerScoreValue = 0;
+let computerScoreValue = 0;
 
-// основная функция
-function game() {
-  let playerScore = 0;
-  let computerScore = 0;
-  // вызываем функцию для выбора счета для победы
-  const numberOfRounds = getNumberOfRounds();
-  // проверка если игрок закрыл окно ввода или ввел неверное значение
-  if (!numberOfRounds) {
-    console.log("wrong input, game is over");
-    return;
-  } else console.log(`WINNER SCORE MUST BE EQUAL TO ${numberOfRounds}`);
-  // цикл для повторения раундов игры пока счет игрока или компьютера не станет равным выбранному ранее счету для победы
-  while (playerScore < numberOfRounds && computerScore < numberOfRounds) {
-    console.log('<NEW ROUND>');
-    // вызываем функцию выбора игрока
-    const playerSelection = getPlayerSelection();
-    // проверка если игрок закрыл окно ввода или ввел неверное значение
-    if (!playerSelection) {
-      console.log("wrong input, game is over");
-      return;
-    }
-    console.log(`your choice is --- ${playerSelection} ---`);
-    // вызываем функцию выборы компьютера
-    const computerSelection = getComputerSelection();
-    console.log(`computer choice is --- ${computerSelection} ---`);
-    // вызываем функцию для определения победителя одного раунда
-    const roundResult = getRoundResult(playerSelection, computerSelection);
-    console.log(`IT'S A ${roundResult}!`);
-    // увеличиваем счет игрока или компьютера в зависимости от результата раунда
-    switch (roundResult) {
-      case "VICTORY":
-        playerScore++;
-        break;
-      case "DEFEAT":
-        computerScore++;
-        break;
-      case "DRAW":
-        break;
-    }
-    console.log(`Round score is ${playerScore} : ${computerScore}`);
-  }
-  // вызываем функцию для определения победителя всей игры
-  const gameResult = getGameResult(playerScore, computerScore);
-  console.log(
-    `GAME IS FINISHED!\nSCORE IS ${playerScore} : ${computerScore}!\nYOU ${gameResult}!`
-  );
-  return gameResult;
-}
+const ROCK = "КАМЕНЬ";
+const PAPER = "БУМАГУ";
+const SCISSORS = "НОЖНИЦЫ";
+const DRAW = "НИЧЬЯ";
+const VICTORY = "ПОБЕДА";
+const DEFEAT = "ПОРАЖЕНИЕ";
 
-// вспомогательные функции
+const gameRoundsSelectForm = document.querySelector(".select-form");
+const gameRoundsSelect = document.querySelector(".rounds-select");
+const gameInfo = document.querySelector(".game-info");
+const gameInfoMessage = document.querySelector(".game-info__message");
+const gameInfoSelectedRounds = document.querySelector(
+  ".game-info__selected-rounds"
+);
+const gameStartButton = document.querySelector(".start-button");
+const gameEndButton = document.querySelector(".end-button");
 
-// функция для определения сколько игрок или компьютер должны набрать очков для победы
-function getNumberOfRounds() {
-  return +prompt("Score to win?", "3");
-}
+const gameStateContainer = document.querySelector(".game-state");
+const choiceWord = document.querySelectorAll(".choice-word");
+const playerChoice = document.querySelector(".player__choice");
+const computerChoice = document.querySelector(".computer__choice");
+const gameChoiceButtons = document.querySelectorAll(".game-choices__button");
+const rockButton = document.querySelector(".rock-button");
+const paperButton = document.querySelector(".paper-button");
+const scissorsButton = document.querySelector(".scissors-button");
 
-// функция для вывода компьютером нужных значений случайным образом
-function getComputerSelection() {
+const gameResultContainer = document.querySelector(".game-result");
+const playerScore = document.querySelector(".game-result__score-player");
+const computerScore = document.querySelector(".game-result__score-computer");
+const gameResultFinalMessage = document.querySelector(
+  ".game-result__final-message"
+);
+const gameResultFinal = document.querySelector(".game-result__final");
+
+const resetScore = () => {
+  playerScoreValue = 0;
+  computerScoreValue = 0;
+  playerScore.innerText = playerScoreValue;
+  computerScore.innerText = computerScoreValue;
+  gameResultFinal.innerText = "";
+};
+
+const showPlayerAndComputerChoices = () => {
+  choiceWord.forEach((element) => {
+    element.classList.remove("is-hidden");
+  });
+  playerChoice.classList.remove("is-hidden");
+  computerChoice.classList.remove("is-hidden");
+};
+
+const disableGameElementsAndShowFinalResult = () => {
+  gameInfoMessage.classList.add("is-hidden");
+  gameResultFinalMessage.classList.remove("is-hidden");
+  gameChoiceButtons.forEach((element) => {
+    element.classList.add("is-disabled");
+  });
+};
+
+const toggleVisibillity = () => {
+  gameInfo.classList.toggle("is-hidden");
+  gameRoundsSelectForm.classList.toggle("is-hidden");
+  gameStateContainer.classList.toggle("is-hidden");
+  gameResultContainer.classList.toggle("is-hidden");
+  choiceWord.forEach((element) => {
+    element.classList.add("is-hidden");
+  });
+  playerChoice.classList.add("is-hidden");
+  computerChoice.classList.add("is-hidden");
+  gameInfoMessage.classList.remove("is-hidden");
+  gameResultFinalMessage.classList.add("is-hidden");
+  gameChoiceButtons.forEach((element) => {
+    element.classList.remove("is-disabled");
+  });
+};
+
+gameStartButton.addEventListener("click", (event) => {
+  toggleVisibillity();
+  gameInfoSelectedRounds.innerText = gameRoundsSelect.value;
+});
+
+gameEndButton.addEventListener("click", (event) => {
+  toggleVisibillity();
+  resetScore();
+});
+
+const getComputerChoice = () => {
   const randomNumberOf3 = Math.floor(Math.random() * 3);
   switch (randomNumberOf3) {
     case 0:
-      return "rock";
+      return ROCK;
     case 1:
-      return "paper";
+      return PAPER;
     case 2:
-      return "scissors";
+      return SCISSORS;
   }
-}
+};
 
-// функция для выбора значений которые вводит игрок
-function getPlayerSelection() {
-  const playerSelection = prompt(
-    "Enter your choice: ",
-    "Rock, Paper or Scissors"
-  );
-  // проверка если игрок нажмет отмена или отправит пустую строку
-  if (!playerSelection) {
+const getRoundResult = (playerChoiceValue, computerChoiceValue) => {
+  if (playerChoiceValue === computerChoiceValue) {
     return;
   } else if (
-    playerSelection.toLowerCase() === "rock" ||
-    playerSelection.toLowerCase() === "paper" ||
-    playerSelection.toLowerCase() === "scissors"
+    (playerChoiceValue === ROCK && computerChoiceValue === PAPER) ||
+    (playerChoiceValue === PAPER && computerChoiceValue === SCISSORS) ||
+    (playerChoiceValue === SCISSORS && computerChoiceValue === ROCK)
   ) {
-    return playerSelection.toLowerCase();
-  }
-  return;
-}
-
-// функция, которая определяет победителя одного раунда игры (или ничью)
-function getRoundResult(playerSelection, computerSelection) {
-  // проверка на ничью
-  if (playerSelection === computerSelection) {
-    return "DRAW";
-    // проверка на проигрыш
-  } else if (
-    (playerSelection === "rock" && computerSelection === "paper") ||
-    (playerSelection === "paper" && computerSelection === "scissors") ||
-    (playerSelection === "scissors" && computerSelection === "rock")
-  ) {
-    return "DEFEAT";
-    // проверка на выигрыш
+    computerScoreValue++;
   } else {
-    return "VICTORY";
+    playerScoreValue++;
   }
-}
+};
 
-//функция для установления победителя игры
-function getGameResult(playerScore, computerScore) {
-  if (playerScore > computerScore) {
-    return "WIN";
-  } else return "LOOSE";
-}
+const game = (playerSelection) => {
+  showPlayerAndComputerChoices();
 
-//git test
+  const playerChoiceValue = playerSelection;
+  const computerChoiceValue = getComputerChoice();
+
+  getRoundResult(playerChoiceValue, computerChoiceValue);
+
+  playerChoice.innerText = playerChoiceValue;
+  computerChoice.innerText = computerChoiceValue;
+  playerScore.innerText = playerScoreValue;
+  computerScore.innerText = computerScoreValue;
+
+  if (
+    playerScoreValue == gameRoundsSelect.value ||
+    computerScoreValue == gameRoundsSelect.value
+  ) {
+    gameResultFinal.innerText =
+      playerScoreValue === computerScoreValue
+        ? DRAW
+        : playerScoreValue > computerScoreValue
+        ? VICTORY
+        : DEFEAT;
+    disableGameElementsAndShowFinalResult();
+  } else return;
+};
+
+rockButton.addEventListener("click", (event) => game(ROCK));
+
+paperButton.addEventListener("click", (event) => game(PAPER));
+
+scissorsButton.addEventListener("click", (event) => game(SCISSORS));

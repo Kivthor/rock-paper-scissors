@@ -1,6 +1,6 @@
 html {
   box-sizing: border-box;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 *,
@@ -9,35 +9,122 @@ html {
   box-sizing: inherit;
 }
 
-section,
-article,
-nav,
-aside,
-header,
-footer,
-main {
+body {
+  padding: 0;
+  margin: 0;
+}
+
+img {
   display: block;
 }
 
-body {
-  margin: 0;
-  background-color: rgb(22, 22, 22);
-}
-
-.container {
-  border: 1px solid rgb(138, 138, 138);
-  border-radius: 12px;
-  box-shadow: 0px 0px 24px rgb(209, 209, 209);
+.game-container {
+  min-width: 360px;
   max-width: 900px;
-  min-width: 300px;
-  margin: 24px auto;
-  padding: 12px;
-  text-align: center;
-  color: rgb(113, 178, 212);
-  font-weight: bold;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  gap: 6px;
+  margin: 0 auto;
 }
 
-.container h1 {
+.game-block {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.game-sub-block {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.game-options,
+.game-result {
+  justify-content: center;
+}
+
+.player,
+.computer {
+  flex-direction: column;
+}
+
+.game-choices__button {
+  border: none;
+  padding: 0;
+  border-radius: 36px;
+  background-color: #fff;
+
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: 36px;
+  }
+}
+.game-choices__button:hover {
+  cursor: pointer;
+}
+.game-choices__button:active {
+  background-color: #efefef;
+}
+
+.player__name {
+  font-weight: bold;
+  color: rgb(61, 141, 231);
+}
+
+.computer__name {
+  font-weight: bold;
+  color: rgb(231, 80, 80);
+}
+
+.game-info__selected-rounds,
+.player__choice,
+.computer__choice,
+.game-result__score-player,
+.game-result__score-computer,
+.game-result__final {
+  border-radius: 4px;
+  background-color: rgb(231, 80, 80);
   text-transform: uppercase;
-  color: rgb(101, 155, 202);
+  color: white;
+  padding: 2px 6px;
+}
+
+.player__choice,
+.game-result__score-player {
+  background-color: rgb(61, 141, 231);
+}
+
+.game-result__final,
+.game-info__selected-rounds {
+  background-color: #43be86;
+}
+
+@media screen and (max-width: 715px) {
+  main {
+    min-height: 670px;
+  }
+  .game-state {
+    flex-direction: column;
+
+    .game-choices {
+      justify-content: center;
+    }
+  }
+}
+
+.is-hidden {
+  display: none;
+}
+
+.is-disabled {
+  opacity: 30%;
+  /* cursor: not-allowed; */
+  pointer-events: none;
 }
